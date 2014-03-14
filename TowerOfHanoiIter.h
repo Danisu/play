@@ -8,7 +8,7 @@ using namespace std;
 void runIt();
 
 //This function prints the three pegs
-void printMove(int [], int [] , int [], int);
+void printMove(int [], int [] , int [], int, bool);
 
 //This function move the disks from one peg to the other
 void moveDisk(int, int *, int *, int *, int *);

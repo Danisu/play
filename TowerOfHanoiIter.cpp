@@ -2,12 +2,16 @@
 /*
  ** For even number of disks it moves all the disks to spare peg
  ** For odd number of disks it moves all the disks to destination peg
+ 
+ ** Quick fix in the printMove function
+ ** change the reference from spare to destination when number of disks are even
  */
 
 void runIt(){
     //declare the number of disks for tower of Hanoi
     int numDisks;
-    printf("\nEnter the no. of Disks: ");
+    printf("Enter the number of Disks: ");
+    
     scanf("%d",&numDisks);
     
     int source[numDisks], spare[numDisks], dest[numDisks];
@@ -27,6 +31,12 @@ void runIt(){
     //the move needed from one peg to other
     int mvPegs = -1;
     
+    //used for printMove function
+    bool isEven;
+    if (numDisks%2 == 0)
+        isEven = true;
+    else
+        isEven = false;
     //These variable will keep track of the head of the peg
     int head1 = 0, head2 = numDisks-1, head3 = numDisks - 1;
     
@@ -40,17 +50,17 @@ void runIt(){
             if (mvPegs == 1) //Peg 1 -> Peg 3 or Peg 3 -> Peg 1
             {
                 moveDisk(numDisks, & head1, & head3, source, dest);
-                printMove(source, spare, dest, numDisks);
+                printMove(source, spare, dest, numDisks, isEven);
             }
             else if (mvPegs == 2) // Peg 1 -> Peg 2 or Peg 2 -> Peg 1
             {
                 moveDisk(numDisks, & head1, & head2, source, spare);
-                printMove(source, spare, dest, numDisks);
+                printMove(source, spare, dest, numDisks, isEven);
             }
             else if (mvPegs == 0) // Peg 2 -> Peg 3 or Peg 3 -> Peg 2
             {
                 moveDisk(numDisks, & head2, & head3, spare, dest);
-                printMove(source, spare, dest, numDisks);
+                printMove(source, spare, dest, numDisks, isEven);
             }else
             {
                 cout << "CODE 1111" << endl;
@@ -63,26 +73,49 @@ void runIt(){
     }
 }
 
-void printMove(int * source, int * spare, int * dest, int size){
+void printMove(int * source, int * spare, int * dest, int size, bool isEven){
     static int step = 0;
-    cout << " SOURC: ";
-    for (int i = 0; i < size; i++) {
-        cout << source[i] << " ";
+    if (!isEven) {
+        cout << " SOURC: ";
+        for (int i = 0; i < size; i++) {
+            cout << source[i] << " ";
+        }
+        cout << endl;
+        cout << " SPARE: ";
+        for (int i = 0; i < size; i++) {
+            cout << spare[i] << " ";
+        }
+        cout << endl;
+        
+        cout << " DESTI: ";
+        for (int i = 0; i < size; i++) {
+            cout << dest[i] << " ";
+        }
+        cout << endl;
+        step++;
+        cout << "--------------------- END OF STEP: " << step << endl;
     }
-    cout << endl;
-    cout << " SPARE: ";
-    for (int i = 0; i < size; i++) {
-        cout << spare[i] << " ";
+    else
+    {
+        cout << " SOURC: ";
+        for (int i = 0; i < size; i++) {
+            cout << source[i] << " ";
+        }
+        cout << endl;
+        cout << " SPARE: ";
+        for (int i = 0; i < size; i++) {
+            cout << dest[i] << " ";     //QUICK FIX
+        }
+        cout << endl;
+        
+        cout << " DESTI: ";
+        for (int i = 0; i < size; i++) {
+            cout << spare[i] << " ";    //QUICK FIX
+        }
+        cout << endl;
+        step++;
+        cout << "--------------------- END OF STEP: " << step << endl;
     }
-    cout << endl;
-    
-    cout << " DESTI: ";
-    for (int i = 0; i < size; i++) {
-        cout << dest[i] << " ";
-    }
-    cout << endl;
-    step++;
-    cout << "--------------------- END OF STEP: " << step << endl;
 }
 
 void moveDisk(int numDisks, int * head1, int * head2, int * peg1, int * peg2){
